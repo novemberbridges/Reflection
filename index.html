@@ -1,0 +1,164 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#58CC02"><meta name="apple-mobile-web-app-capable" content="yes"><title>Lifescaler</title>
+<style>
+:root{--bg:#fff;--card:#fff;--tx:#3c3c3c;--mu:#777;--bd:#e5e5e5;--sf:#f4f4f4;--g:#58CC02;--gd:#46a302;--b:#1CB0F6;--bdk:#1899d6;--y:#FFC800;--o:#FF9600;--r:#FF4B4B;--rd:#ea2b2b}
+[data-th=dark]{--bg:#131f24;--card:#1f2c33;--tx:#f1f7fb;--mu:#8fa3ad;--bd:#37464f;--sf:#1a262c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:600 16px/1.4 Nunito,system-ui,-apple-system,sans-serif;padding-top:env(safe-area-inset-top)}
+#app{max-width:520px;margin:0 auto;padding:12px 14px 110px}
+h2{font-size:13px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin:20px 0 8px}
+.top{font-weight:800;color:var(--g);font-size:20px;margin-bottom:8px}
+.row,.between{display:flex;gap:8px;align-items:center}.between{justify-content:space-between}.grow{flex:1;min-width:0}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.mu{color:var(--mu);font-size:14px}.center{text-align:center}.full{width:100%;margin-top:10px}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:16px;padding:12px;margin-bottom:10px;animation:in .35s cubic-bezier(.34,1.56,.64,1)}
+.btn{border:2px solid var(--bd);border-bottom-width:4px;border-radius:14px;background:var(--card);color:var(--tx);padding:10px 12px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
+.btn:active,.chip:active{transform:translateY(3px);border-bottom-width:2px}
+.btn.g,.btn.on.g{background:var(--g);border-color:var(--gd);color:#fff}.btn.b,.btn.on{background:var(--b);border-color:var(--bdk);color:#fff}.btn.r{color:var(--r)}
+.btn.sm{padding:6px 10px;font-size:14px}
+.mood{display:flex;flex-direction:column;align-items:center;min-height:68px;justify-content:center}.mood span{font-size:26px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{border:2px solid var(--bd);border-bottom-width:4px;border-radius:999px;background:var(--card);color:var(--tx);padding:6px 12px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
+.chip.on{background:var(--c);border-color:var(--c);color:#fff;border-bottom-color:rgba(0,0,0,.25)}
+.in{width:100%;border:2px solid var(--bd);border-radius:12px;background:var(--sf);color:var(--tx);padding:10px 12px;font-family:inherit;font-size:16px;font-weight:600}
+.in.num{width:64px}textarea.in{min-height:70px;resize:vertical}
+.score{min-width:64px;text-align:center;font-weight:900;font-size:26px;padding:6px 10px;border-radius:14px;background:var(--sf);border:2px solid var(--bd)}
+.score.p{background:var(--g);border-color:var(--gd);color:#fff}.score.n{background:var(--r);border-color:var(--rd);color:#fff;opacity:.85}
+.ev{display:flex;gap:10px;align-items:center}.gp{color:var(--g)}.rp{color:var(--r)}
+.x{border:0;background:none;color:var(--mu);font-size:18px;padding:6px;cursor:pointer}
+.bn{display:flex;gap:8px;align-items:center;background:color-mix(in srgb,var(--y) 22%,var(--card));border-color:var(--y)}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:2px solid var(--bd);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.nav button{flex:1;border:0;background:none;color:var(--mu);font-family:inherit;font-weight:800;font-size:12px;padding:6px 2px;border-radius:12px;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.nav button span{display:block;font-size:22px}.nav button.on{color:var(--b);background:color-mix(in srgb,var(--b) 14%,transparent);transform:translateY(-2px)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.grid>b{text-align:center;font-size:12px;color:var(--mu)}
+.cell{aspect-ratio:1;border:2px solid var(--bd);border-radius:12px;background:var(--bgc,var(--card));color:var(--tx);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;padding:0;cursor:pointer;line-height:1.1}
+.cell span{font-size:13px;height:15px}.cell small{font-size:10px;font-weight:800}.cell.tod{border-color:var(--y);border-width:3px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.pb{margin-bottom:12px}.bar{height:14px;background:var(--sf);border-radius:8px;position:relative;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;border-radius:8px;transform-origin:left;animation:grow .8s cubic-bezier(.34,1.2,.64,1)}.bar u{position:absolute;top:0;bottom:0;width:3px;background:var(--tx);opacity:.5}
+.chart{width:100%;height:120px}.tb{transform-box:fill-box;transform-origin:center;animation:gy .6s cubic-bezier(.34,1.4,.64,1) backwards}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.stat b{font-size:24px;display:block}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}.arch{opacity:.55}.tag{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--sf)}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:14px;font-weight:800;opacity:0;pointer-events:none;transition:opacity .25s;max-width:88%;text-align:center}
+#toast.on{opacity:1}
+@keyframes in{from{opacity:0;transform:translateY(8px) scale(.98)}}@keyframes grow{from{transform:scaleX(0)}}@keyframes gy{from{transform:scaleY(0)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div id="app"></div><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),A=$('#app');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0'),ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pd=s=>{const[a,b,c]=s.split('-');return new Date(+a,b-1,+c)},add=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return ymd(d)};
+const TODAY=()=>ymd(new Date()),uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const MOODS=[['good','😄','Good'],['normal','😐','Normal'],['bad','😞','Bad']],COLS=['#58CC02','#1CB0F6','#FFC800','#ce82ff','#2bc4b4','#FF9600','#e56ac1'];
+const rng=(a,b)=>{const o=[];for(let d=a;d<=b;d=add(d,1))o.push(d);return o};
+/* ---------- storage (IndexedDB, schema v1) ---------- */
+let _db;const IDB={open(){return _db||(_db=new Promise((res,rej)=>{const r=indexedDB.open('lifescaler',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))},
+async get(k){const d=await this.open();return new Promise(res=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res()})},
+async set(k,v){const d=await this.open();return new Promise((res,rej)=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=res;t.onerror=()=>rej(t.error)})}};
+const seed=()=>({v:1,name:'Lifescaler',theme:'auto',lastBackup:null,snooze:null,items:[...['Creative work','Relationships','Health & movement','Learning','Personal freedom'].map((l,i)=>({id:uid(),label:l,type:'ideal',target:null,archived:false,color:COLS[i]})),...['Draining obligations','Time-wasters','Saying yes when meaning no'].map(l=>({id:uid(),label:l,type:'anti',archived:false}))],days:{},refl:{},sync:{gid:'',url:'',tok:''}});
+let db,S={tab:'today',date:TODAY(),ins:'week',io:0,cm:null,f:{t:'',k:null,w:1},pers:null},st,LS=null;
+function save(){clearTimeout(st);st=setTimeout(flush,150)}
+function flush(){IDB.set('db',db).catch(()=>toast('Could not save on this device'))}
+addEventListener('visibilitychange',()=>{if(document.hidden&&db)flush()});
+const item=id=>db.items.find(i=>i.id===id),lbl=k=>k==='_a'?'Against my ideal':item(k)?.label||'Removed item';
+const day=d=>db.days[d]||{ev:[]},sc=d=>day(d).ev.reduce((a,e)=>a+e.s*e.w,0),sg=s=>(s>0?'+':s<0?'−':'')+Math.abs(s);
+function edit(d,fn){const x=db.days[d]||(db.days[d]={ev:[]});fn(x);if(!x.mood&&!x.note&&!x.ev.length)delete db.days[d];save()}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+function theme(){document.documentElement.dataset.th=db.theme==='auto'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):db.theme;document.title=db.name}
+const scol=s=>s===0?'var(--sf)':`color-mix(in srgb,${s>0?'var(--g)':'var(--r)'} ${Math.round(Math.min(85,25+Math.abs(s)*9))}%,transparent)`;
+/* ---------- views ---------- */
+const chip=(k,l,c)=>`<button class="chip ${S.f.k===k?'on':''}" style="--c:${c||'#999'}" data-a="tag" data-v="${k}">${esc(l)}</button>`;
+function banner(){const n=Object.keys(db.days).length;if(!n)return'';const l=db.lastBackup?Math.floor((Date.now()-db.lastBackup)/864e5):999;if(l<21||(db.snooze&&Date.now()<db.snooze))return'';return`<div class="card bn"><div class="grow">💾 ${db.lastBackup?`Last backup was ${l} days ago.`:'No backup yet.'} Save a copy to Files or Drive?</div><button class="btn sm g" data-a="expJ">Back up</button><button class="btn sm" data-a="snz">Later</button></div>`}
+function vToday(){const d=day(S.date),s=sc(S.date),isT=S.date===TODAY(),dt=pd(S.date),I=db.items.filter(i=>!i.archived);
+return`${banner()}<div class="row"><button class="btn sm" data-a="dd" data-v="-1">‹</button><div class="grow center"><b>${isT?'Today':dt.toLocaleDateString(undefined,{weekday:'long'})}</b><div class="mu">${dt.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}${isT?'':` · <a href="#" data-a="now">back to today</a>`}</div></div><div id="score" class="score ${s>0?'p':s<0?'n':''}">${sg(s)||'0'}</div><button class="btn sm" data-a="dd" data-v="1">›</button></div>
+<h2>How did it feel?</h2><div class="row3">${MOODS.map(m=>`<button class="btn mood ${d.mood===m[0]?'on':''}" data-a="mood" data-v="${m[0]}"><span>${m[1]}</span>${m[2]}</button>`).join('')}</div>
+<h2>What mattered</h2>${d.ev.length?d.ev.map(e=>`<div class="card ev" style="border-left:6px solid ${e.s>0?'var(--g)':'var(--r)'}"><div class="grow"><b>${esc(e.t||lbl(e.k))}</b><div class="mu">${esc(lbl(e.k))} · ${'●'.repeat(e.w)}</div></div><b class="${e.s>0?'gp':'rp'}">${sg(e.s*e.w)}</b><button class="x" data-a="delEv" data-v="${e.id}">✕</button></div>`).join(''):`<div class="card mu center">Quiet day? That counts. Nothing to log, score 0, no guilt. 🌿</div>`}
+<div class="card"><input class="in" placeholder="What happened? (optional)" value="${esc(S.f.t)}" data-i="ft" maxlength="100"><div class="chips">${I.filter(i=>i.type==='ideal').map(i=>chip(i.id,i.label,i.color)).join('')}${I.filter(i=>i.type==='anti').map(i=>chip(i.id,i.label,'#FF4B4B')).join('')}${chip('_a','Against my ideal','#FF4B4B')}</div>
+<div class="row3">${[1,2,3].map(w=>`<button class="btn ${S.f.w===w?'on':''}" data-a="w" data-v="${w}">${['Small','Medium','Big'][w-1]} · ${w}</button>`).join('')}</div><button class="btn g full" data-a="addEv">Add</button></div>
+<h2>Daily note</h2><input class="in" placeholder="One line, optional" value="${esc(d.note||'')}" data-c="note" maxlength="160">`}
+function vCal(){const c=S.cm||(S.cm={y:new Date().getFullYear(),m:new Date().getMonth()}),n=new Date(c.y,c.m+1,0).getDate(),off=new Date(c.y,c.m,1).getDay();let h='';
+for(let i=0;i<off;i++)h+='<i></i>';for(let i=1;i<=n;i++){const ds=c.y+'-'+pad(c.m+1)+'-'+pad(i),x=db.days[ds],s=x?sc(ds):0;h+=`<button class="cell ${ds===TODAY()?'tod':''}" data-a="pick" data-v="${ds}" style="${x?'--bgc:'+scol(s):''}"><b>${i}</b><span>${x?.mood?MOODS.find(m=>m[0]===x.mood)[1]:''}</span><small>${x?.ev.length?sg(s)||'0':''}</small></button>`}
+return`<div class="row"><button class="btn sm" data-a="cm" data-v="-1">‹</button><b class="grow center">${new Date(c.y,c.m,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})}</b><button class="btn sm" data-a="cm" data-v="1">›</button></div><div class="grid" style="margin-top:10px">${'SMTWTFS'.split('').map(x=>`<b>${x}</b>`).join('')}${h}</div><p class="mu center">Colour = alignment · emoji = mood · tap a day to view or edit</p>`}
+function agg(ds){const P={},N={},m={good:0,normal:0,bad:0};let tot=0,n=0;const rows=[];for(const d of ds){const x=db.days[d];if(!x)continue;const s=sc(d);tot+=s;n++;if(x.mood)m[x.mood]++;rows.push([d,s,x.mood]);for(const e of x.ev){const o=e.s>0?P:N;o[e.k]=(o[e.k]||0)+e.w}}return{P,N,m,tot,n,rows}}
+function pbars(P,mult,status){const act=db.items.filter(i=>i.type==='ideal'&&!i.archived);if(!act.length)return'<div class="mu">Add Ideal Life items first.</div>';const vals=act.map(i=>P[i.id]||0),mean=vals.reduce((a,b)=>a+b,0)/act.length,mx=Math.max(1,...act.map(i=>Math.max(P[i.id]||0,(i.target||0)*mult)));
+return act.map(i=>{const v=P[i.id]||0,tg=i.target?i.target*mult:0,r=tg?v/tg:mean?v/mean:0,s=!status?'':r>=.8?'🌱 Thriving':r<.4?'💧 Needs water':'Steady';return`<div class="pb"><div class="between"><span>${esc(i.label)} ${s?`<span class="tag">${s}</span>`:''}</span><b>${v}${tg?` / ${tg}`:''}</b></div><div class="bar"><i style="width:${v/mx*100}%;background:${i.color||'var(--b)'}"></i>${tg?`<u style="left:${tg/mx*100}%"></u>`:''}</div>${tg&&v<tg&&!status?`<small class="mu">${tg-v} to reach your weekly target</small>`:''}</div>`}).join('')}
+function moodBlock(g){const r=g.rows,c=MOODS.map(m=>`<div><b>${g.m[m[0]]}</b>${m[1]} ${m[2]}</div>`).join('');return`<div class="card stat">${c}</div>`}
+function vIns(){const T=pd(TODAY());let a,b,lab,body='';
+if(S.ins==='week'){const t=new Date(T);t.setDate(t.getDate()-((t.getDay()+6)%7)+S.io*7);a=ymd(t);b=add(a,6);lab=pd(a).toLocaleDateString(undefined,{month:'short',day:'numeric'})+' – '+pd(b).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+const g=agg(rng(a,b)),act=db.items.filter(i=>i.type==='ideal'&&!i.archived).map(i=>[i,g.P[i.id]||0]).sort((x,y)=>y[1]-x[1]);
+body=`<div class="card"><div class="between"><span>Week total</span><b class="score ${g.tot>0?'p':g.tot<0?'n':''}">${sg(g.tot)||'0'}</b></div></div>${moodBlock(g)}<h2>Ideal Life this week</h2><div class="card">${pbars(g.P,1)}</div>
+${g.n&&act.length>1?`<div class="card">Most attended: <b>${esc(act[0][0].label)}</b><br>Least attended: <b>${esc(act[act.length-1][0].label)}</b></div>`:`<div class="card mu">Nothing logged yet. A quiet week is just data. 🌿</div>`}
+<h2>Reflection</h2><div class="card"><div class="mu">What's one small change for next week to get closer to my ideal?</div><textarea class="in" data-c="refl" data-v="${a}" placeholder="Optional">${esc(db.refl[a]||'')}</textarea></div>`}
+else if(S.ins==='month'){const d0=new Date(T.getFullYear(),T.getMonth()+S.io,1),n=new Date(d0.getFullYear(),d0.getMonth()+1,0).getDate();a=ymd(d0);b=add(a,n-1);lab=d0.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+const g=agg(rng(a,b)),mx=Math.max(3,...g.rows.map(r=>Math.abs(r[1])));
+const bars=g.rows.map(([d,s])=>{const i=+d.slice(8)-1,h=Math.abs(s)/mx*44;return`<rect class="tb" x="${i*10+1}" y="${s>=0?50-h:50}" width="8" height="${Math.max(h,1)}" rx="2" fill="${s>=0?'var(--g)':'var(--r)'}" style="animation-delay:${i*15}ms"/>`}).join('');
+const so=[...g.rows].sort((x,y)=>y[1]-x[1]),f=d=>pd(d).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+body=`<div class="card"><div class="between"><span>Month total</span><b class="score ${g.tot>0?'p':g.tot<0?'n':''}">${sg(g.tot)||'0'}</b></div><svg viewBox="0 0 ${n*10} 100" class="chart"><line x1="0" x2="${n*10}" y1="50" y2="50" stroke="var(--bd)"/>${bars}</svg></div>${moodBlock(g)}
+${so.length?`<div class="card">Best day: <b>${f(so[0][0])} (${sg(so[0][1])||0})</b><br>Lowest day: <b>${f(so[so.length-1][0])} (${sg(so[so.length-1][1])||0})</b><div class="mu">Low days are information, not a verdict.</div></div>`:''}<h2>Pillar balance</h2><div class="card">${pbars(g.P,Math.ceil(n/7))}</div>`}
+else{const y=T.getFullYear()+S.io;a=y+'-01-01';b=y+'-12-31';lab=y;const g=agg(rng(a,b)),wk=y<T.getFullYear()?52:Math.max(1,Math.ceil((T-new Date(y,0,1))/6048e5)),mv={good:1,normal:0,bad:-1};
+const R=g.rows.filter(r=>r[2]),av=m=>{const z=R.filter(r=>r[2]===m);return z.length?(z.reduce((s,r)=>s+r[1],0)/z.length).toFixed(1):'–'};
+let r=0;if(R.length>4){const mx=R.reduce((s,q)=>s+mv[q[2]],0)/R.length,my=R.reduce((s,q)=>s+q[1],0)/R.length;let sxy=0,sx=0,sy=0;R.forEach(q=>{const dx=mv[q[2]]-mx,dy=q[1]-my;sxy+=dx*dy;sx+=dx*dx;sy+=dy*dy});r=sx&&sy?sxy/Math.sqrt(sx*sy):0}
+const hard=R.filter(q=>q[2]==='bad'&&q[1]>0).length,fun=R.filter(q=>q[2]==='good'&&q[1]<0).length,pulls=Object.entries(g.N).sort((x,y)=>y[1]-x[1]);
+body=`<div class="card stat"><div><b>${g.n}</b>days logged</div><div><b>${sg(g.tot)||0}</b>year total</div><div><b>${g.n?(g.tot/g.n).toFixed(1):0}</b>avg / day</div></div><h2>Thriving vs. needs water</h2><div class="card">${pbars(g.P,wk,true)}</div>
+<h2>Recurring pulls</h2><div class="card">${pulls.length?pulls.slice(0,5).map(([k,v])=>`<div class="between"><span>${esc(lbl(k))}</span><b class="rp">${v} pts</b></div>`).join(''):'<span class="mu">Nothing logged against your ideal. 🌿</span>'}</div>
+<h2>Mood vs. alignment</h2><div class="card"><div class="stat"><div><b>${av('good')}</b>😄 avg score</div><div><b>${av('normal')}</b>😐 avg score</div><div><b>${av('bad')}</b>😞 avg score</div></div><p class="mu">${R.length<5?'Log a few more moods to see how they relate.':Math.abs(r)<.25?'Feeling and doing move mostly independently, which is exactly why both are tracked.':r>0?'Better-feeling days tend to be more aligned too.':'Harder-feeling days tend to be the more aligned ones.'}</p><div class="between"><span>Hard but aligned</span><b>${hard}</b></div><div class="between"><span>Fun but off-track</span><b>${fun}</b></div></div>`}
+return`<div class="row"><button class="btn sm" data-a="io" data-v="-1">‹</button><b class="grow center">${lab}</b><button class="btn sm" data-a="io" data-v="1">›</button></div><div class="seg" style="margin-top:10px">${['week','month','year'].map(x=>`<button class="btn ${S.ins===x?'on':''}" data-a="ins" data-v="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')}</div>${body}`}
+function irow(i){return`<div class="card ${i.archived?'arch':''}"><div class="row"><span class="dot" style="background:${i.type==='anti'?'var(--r)':i.color||'var(--b)'}"></span><input class="in grow" value="${esc(i.label)}" data-c="lab" data-v="${i.id}" maxlength="40">${i.type==='ideal'?`<input class="in num" type="number" min="0" max="99" placeholder="tgt" title="Weekly target (points)" value="${i.target??''}" data-c="tgt" data-v="${i.id}">`:''}</div><div class="row" style="margin-top:8px"><button class="btn sm" data-a="up" data-v="${i.id}">↑</button><button class="btn sm" data-a="dn" data-v="${i.id}">↓</button><button class="btn sm grow" data-a="arch" data-v="${i.id}">${i.archived?'Restore':'Archive'}</button><button class="btn sm r" data-a="del" data-v="${i.id}">Delete</button></div></div>`}
+function vIdeal(){const L=t=>db.items.filter(i=>i.type===t),na=L('ideal').filter(i=>!i.archived).length,fs='showSaveFilePicker'in window,s=db.sync,
+add=t=>`<div class="row"><input class="in" id="new-${t}" placeholder="Add ${t==='ideal'?'an ideal':'a friction item'}…" maxlength="40"><button class="btn g" data-a="addI" data-v="${t}">Add</button></div>`;
+return`<h2>My ideal life ${na<3||na>7?`<span class="tag">3–7 works well</span>`:''}</h2><div class="mu" style="margin-bottom:8px">Number box = optional weekly target in points.</div>${L('ideal').map(irow).join('')}${add('ideal')}
+<h2>Things I want to avoid</h2>${L('anti').map(irow).join('')}${add('anti')}
+<h2>Settings</h2><div class="card"><div class="mu">App name (try Life or Reflection)</div><input class="in" value="${esc(db.name)}" data-c="nm" maxlength="20"><div class="mu" style="margin-top:10px">Theme</div><select class="in" data-c="th">${['auto','light','dark'].map(t=>`<option ${db.theme===t?'selected':''}>${t}</option>`).join('')}</select><p class="mu">Storage: ${S.pers===true?'✅ persistent (protected from auto-clearing)':'⚠️ not guaranteed persistent. Install to home screen and keep backups.'}</p></div>
+<h2>Backup & sync</h2><div class="card"><div class="mu">Last backup: ${db.lastBackup?new Date(db.lastBackup).toLocaleDateString():'never'}</div><div class="row3" style="grid-template-columns:1fr 1fr"><button class="btn g" data-a="expJ">Export JSON</button><button class="btn b" data-a="expC">Export CSV</button></div><label class="btn full" style="display:block;text-align:center">Import / merge JSON<input type="file" accept=".json,application/json" data-c="imp" hidden></label></div>
+<div class="card"><b>📁 File sync</b><div class="mu">${fs?'Pick lifescaler-data.json once, then save or load in one tap.':'Not supported here. Use Export (opens the share sheet) and save to Files / Drive.'}</div>${fs?`<div class="row3"><button class="btn sm" data-a="fpick">Choose</button><button class="btn sm g" data-a="fsave">Save</button><button class="btn sm" data-a="fload">Load</button></div>`:''}</div>
+<div class="card"><b>☁️ Google Drive</b><div class="mu">Create an OAuth Web Client ID (Drive API on) and add this page's URL as an authorised origin. Data goes to a private app folder.</div><input class="in" placeholder="Client ID" value="${esc(s.gid)}" data-c="gid"><div class="row3" style="grid-template-columns:1fr 1fr"><button class="btn sm g" data-a="gpush">Push</button><button class="btn sm" data-a="gpull">Pull &amp; merge</button></div></div>
+<div class="card"><b>🔗 WebDAV / custom endpoint</b><div class="mu">PUT/GET of the JSON. Token = Bearer, or user:password = Basic. Server must allow CORS.</div><input class="in" placeholder="https://…/lifescaler-data.json" value="${esc(s.url)}" data-c="url"><input class="in" style="margin-top:8px" type="password" placeholder="Token or user:password" value="${esc(s.tok)}" data-c="tok"><div class="row3" style="grid-template-columns:1fr 1fr"><button class="btn sm g" data-a="wpush">Push</button><button class="btn sm" data-a="wpull">Pull &amp; merge</button></div></div>`}
+const VIEWS={today:vToday,cal:vCal,ins:vIns,ideal:vIdeal},TABS=[['today','☀️','Today'],['cal','📅','Calendar'],['ins','📊','Insights'],['ideal','🌱','Ideal Life']];
+function render(){const y=scrollY;A.innerHTML=`<div class="top">${esc(db.name)}</div>${VIEWS[S.tab]()}<nav class="nav">${TABS.map(t=>`<button class="${S.tab===t[0]?'on':''}" data-a="tab" data-v="${t[0]}"><span>${t[1]}</span>${t[2]}</button>`).join('')}</nav>`;scrollTo(0,y);
+if(S.tab==='today'){const s=sc(S.date),k=S.date+s;if(LS!==null&&LS!==k&&!matchMedia('(prefers-reduced-motion:reduce)').matches)$('#score')?.animate([{transform:'scale(1)'},{transform:'scale(1.3)'},{transform:'scale(1)'}],{duration:380,easing:'cubic-bezier(.34,1.56,.64,1)'});LS=k}}
+/* ---------- data helpers ---------- */
+const payload=()=>JSON.stringify({app:'lifescaler',v:1,exported:new Date().toISOString(),name:db.name,items:db.items,days:db.days,refl:db.refl},null,1);
+function csv(){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"',r=[['date','mood','day_score','note','event','item','kind','weight','points']];Object.keys(db.days).sort().forEach(d=>{const x=db.days[d],s=sc(d);if(!x.ev.length)r.push([d,x.mood||'',s,x.note||'','','','','','']);x.ev.forEach(e=>r.push([d,x.mood||'',s,x.note||'',e.t,lbl(e.k),e.s>0?'ideal':'against',e.w,e.s*e.w]))});return r.map(a=>a.map(q).join(',')).join('\n')}
+async function out(name,type,text){const f=new File([text],name,{type});try{if(navigator.canShare?.({files:[f]})){await navigator.share({files:[f],title:name});return true}}catch(e){if(e.name==='AbortError')return false}const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4e3);return true}
+function merge(j){if(!j||j.app!=='lifescaler')throw Error('Not a Lifescaler file');const ids=new Set(db.items.map(i=>i.id));(j.items||[]).forEach(i=>{if(!ids.has(i.id))db.items.push(i)});for(const[d,x]of Object.entries(j.days||{})){const l=db.days[d];if(!l){db.days[d]=x;continue}const e=new Set(l.ev.map(v=>v.id));x.ev.forEach(v=>{if(!e.has(v.id))l.ev.push(v)});l.mood=l.mood||x.mood;l.note=l.note||x.note}db.refl={...j.refl,...db.refl};save();render()}
+const stamp=()=>{db.lastBackup=Date.now();db.snooze=null;save();render()};
+const net=async(fn,ok)=>{if(!navigator.onLine)return toast("Offline. Your data is safe on this device.");try{await fn();toast(ok)}catch(e){if(e.name!=='AbortError')toast(e.message||'Sync failed')}};
+const ld=u=>new Promise((r,j)=>{if(window.google?.accounts)return r();const s=document.createElement('script');s.src=u;s.onload=r;s.onerror=()=>j(Error('Could not load Google sign-in'));document.head.appendChild(s)});
+const gtok=async()=>{if(!db.sync.gid)throw Error('Add your Google Client ID first');await ld('https://accounts.google.com/gsi/client');return new Promise((r,j)=>google.accounts.oauth2.initTokenClient({client_id:db.sync.gid,scope:'https://www.googleapis.com/auth/drive.appdata',callback:x=>x.access_token?r(x.access_token):j(Error(x.error||'Auth failed')),error_callback:()=>j(Error('Sign-in cancelled'))}).requestAccessToken())};
+const gfind=async t=>{const r=await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id)&q='+encodeURIComponent("name='lifescaler-data.json'"),{headers:{Authorization:'Bearer '+t}});if(!r.ok)throw Error('Drive error '+r.status);return(await r.json()).files[0]?.id};
+async function gpush(){const t=await gtok(),id=await gfind(t),H={Authorization:'Bearer '+t};let r;if(id)r=await fetch('https://www.googleapis.com/upload/drive/v3/files/'+id+'?uploadType=media',{method:'PATCH',headers:{...H,'Content-Type':'application/json'},body:payload()});else{const bd='lsb';r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{...H,'Content-Type':'multipart/related; boundary='+bd},body:`--${bd}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify({name:'lifescaler-data.json',parents:['appDataFolder']})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${payload()}\r\n--${bd}--`})}if(!r.ok)throw Error('Drive error '+r.status);stamp()}
+async function gpull(){const t=await gtok(),id=await gfind(t);if(!id)throw Error('No Drive backup yet');const r=await fetch('https://www.googleapis.com/drive/v3/files/'+id+'?alt=media',{headers:{Authorization:'Bearer '+t}});if(!r.ok)throw Error('Drive error '+r.status);merge(await r.json())}
+const wh=()=>{if(!db.sync.url)throw Error('Add the endpoint URL first');const k=db.sync.tok;return k?{Authorization:k.includes(':')?'Basic '+btoa(k):'Bearer '+k}:{}};
+let FH;const fh=async()=>FH||(FH=await IDB.get('fh'));
+async function fpick(){FH=await showSaveFilePicker({suggestedName:'lifescaler-data.json',types:[{accept:{'application/json':['.json']}}]});IDB.set('fh',FH).catch(()=>{})}
+function mv(id,d){const a=db.items,i=a.findIndex(x=>x.id===id),ty=a[i].type;let j=i+d;while(a[j]&&a[j].type!==ty)j+=d;if(!a[j])return;[a[i],a[j]]=[a[j],a[i]];save();render()}
+/* ---------- actions ---------- */
+const ACT={tab:v=>{S.tab=v;S.io=0;render();scrollTo(0,0)},mood:v=>{edit(S.date,x=>x.mood=x.mood===v?undefined:v);render()},tag:v=>{S.f.k=S.f.k===v?null:v;render()},w:v=>{S.f.w=+v;render()},
+addEv:()=>{const k=S.f.k;if(!k)return toast('Pick what it connects to');const s=(k==='_a'||item(k)?.type==='anti')?-1:1,f=S.f;edit(S.date,x=>x.ev.push({id:uid(),t:f.t.trim(),k,w:f.w,s}));S.f={t:'',k:null,w:1};render()},
+delEv:v=>{edit(S.date,x=>x.ev=x.ev.filter(e=>e.id!==v));render()},dd:v=>{S.date=add(S.date,+v);render()},now:()=>{S.date=TODAY();render()},
+cm:v=>{const c=S.cm,d=new Date(c.y,c.m+ +v,1);S.cm={y:d.getFullYear(),m:d.getMonth()};render()},pick:v=>{S.date=v;S.tab='today';render();scrollTo(0,0)},ins:v=>{S.ins=v;S.io=0;render()},io:v=>{S.io+=+v;render()},
+arch:v=>{const i=item(v);i.archived=!i.archived;save();render()},del:v=>{if(!confirm('Delete this item? Past logs keep their points but lose the label. Archiving keeps everything.'))return;db.items=db.items.filter(i=>i.id!==v);if(S.f.k===v)S.f.k=null;save();render()},up:v=>mv(v,-1),dn:v=>mv(v,1),
+addI:t=>{const l=$('#new-'+t).value.trim();if(!l)return;db.items.push({id:uid(),label:l,type:t,target:null,archived:false,color:COLS[db.items.length%COLS.length]});save();render()},
+snz:()=>{db.snooze=Date.now()+7*864e5;save();render()},
+expJ:async()=>{if(await out('lifescaler-'+TODAY()+'.json','application/json',payload()))stamp()},expC:()=>out('lifescaler-'+TODAY()+'.csv','text/csv',csv()),
+fpick:async()=>{await fpick();toast('File chosen')},fsave:async()=>{const h=await fh()||(await fpick(),FH);if(await h.requestPermission({mode:'readwrite'})!=='granted')throw Error('Permission denied');const w=await h.createWritable();await w.write(payload());await w.close();stamp();toast('Saved')},
+fload:async()=>{const h=await fh();if(!h)throw Error('Choose a file first');await h.requestPermission({mode:'read'});merge(JSON.parse(await(await h.getFile()).text()));toast('Merged')},
+gpush:()=>net(gpush,'Pushed to Drive'),gpull:()=>net(gpull,'Merged from Drive'),
+wpush:()=>net(async()=>{const r=await fetch(db.sync.url,{method:'PUT',headers:{...wh(),'Content-Type':'application/json'},body:payload()});if(!r.ok)throw Error('Server said '+r.status);stamp()},'Pushed'),
+wpull:()=>net(async()=>{const r=await fetch(db.sync.url,{headers:wh()});if(!r.ok)throw Error('Server said '+r.status);merge(await r.json())},'Merged')};
+const CH={note:v=>edit(S.date,x=>x.note=v.trim()||undefined),refl:(v,t)=>{db.refl[t.dataset.v]=v;save()},lab:(v,t)=>{const i=item(t.dataset.v);i.label=v.trim()||i.label;save();render()},tgt:(v,t)=>{item(t.dataset.v).target=v===''?null:Math.max(0,+v);save()},
+nm:v=>{db.name=v.trim()||'Lifescaler';theme();save();render()},th:v=>{db.theme=v;theme();save();render()},gid:v=>{db.sync.gid=v.trim();save()},url:v=>{db.sync.url=v.trim();save()},tok:v=>{db.sync.tok=v.trim();save()},
+imp:async(v,t)=>{try{merge(JSON.parse(await t.files[0].text()));toast('Merged')}catch(e){toast(e.message)}t.value=''}};
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]');if(!t)return;e.preventDefault();try{await ACT[t.dataset.a](t.dataset.v,t)}catch(x){if(x?.name!=='AbortError')toast(x.message||'Something went wrong')}});
+document.addEventListener('input',e=>{if(e.target.dataset.i==='ft')S.f.t=e.target.value});
+document.addEventListener('change',e=>{const c=e.target.dataset.c;if(c)CH[c](e.target.value,e.target)});
+/* ---------- boot / PWA ---------- */
+(async()=>{try{db=await IDB.get('db')}catch{}
+if(!db){db=seed();save()}db.sync=db.sync||{gid:'',url:'',tok:''};db.refl=db.refl||{};db.items=db.items||[];db.days=db.days||{};
+try{S.pers=await navigator.storage.persist()}catch{}
+theme();render();matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',theme);
+try{const ic='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#58CC02"/><path d="M130 380V150M130 380h250" stroke="#fff" stroke-width="44" stroke-linecap="round" fill="none"/><circle cx="330" cy="190" r="34" fill="#FFC800"/></svg>');
+const m=new Blob([JSON.stringify({name:'Lifescaler',short_name:db.name,start_url:location.href.split('#')[0],display:'standalone',background_color:'#58CC02',theme_color:'#58CC02',icons:[{src:ic,sizes:'512x512',type:'image/svg+xml',purpose:'any'}]})],{type:'application/manifest+json'});
+const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(m);document.head.appendChild(l)}catch{}
+if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})})();
+</script></body></html>
